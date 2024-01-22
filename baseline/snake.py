@@ -2,6 +2,8 @@ import pygame
 import os, random
 import numpy as np
 
+### 뱀게임 정의
+
 FPS = 60
 SCREEN_SIZE = 30
 PIXEL_SIZE = 20
