@@ -69,7 +69,7 @@ while True:
         genome.fitness = fitness
     
         # print('Generation #%s, Genome #%s, Fitness: %s, Score: %s' % (n_gen, i, fitness, score))
-  
+
     if best_genomes is not None:
         genomes.extend(best_genomes)
     genomes.sort(key=lambda x: x.fitness, reverse=True)
@@ -110,7 +110,7 @@ while True:
   
     # mutation (add divercity)
     # as childrens are solely based on the perents, the pool of genes are limited to the genes initialized at the begining.
-    # to add diversity(for poential oprimal weight) replace partial of childrens gene with random value and create aditional children with mutation
+    # to add diversity(for poential oprimal weight) replace partial of childrens gene(respect to mutation probability) with random value and create aditional children with mutation
     # this makes the algorithm not to require differentiation for training which makes it to run much faster
     genomes = []
     for i in range(int(N_POPULATION / (N_BEST + N_CHILDREN))):
@@ -119,7 +119,7 @@ while True:
       
             mean = 20
             stddev = 10
-      
+
             if random.uniform(0, 1) < PROB_MUTATION:
               new_genome.w1 += new_genome.w1 * np.random.normal(mean, stddev, size=(6, 10)) / 100 * np.random.randint(-1, 2, (6, 10))
             if random.uniform(0, 1) < PROB_MUTATION:
@@ -130,4 +130,3 @@ while True:
               new_genome.w4 += new_genome.w4 * np.random.normal(mean, stddev, size=(10, 3)) / 100 * np.random.randint(-1, 2, (10, 3))
       
             genomes.append(new_genome)
-  

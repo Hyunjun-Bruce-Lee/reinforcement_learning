@@ -1,5 +1,5 @@
 import pygame
-import os, random
+import random
 import numpy as np
 
 # define variables
@@ -48,7 +48,7 @@ class Snake():
             if list([x, y]) not in self.snake.tolist():
                 break
         self.fruit = np.array([x, y])
-  
+    
     def step(self, direction):
         # define snake game rule
         # if head goes out (screen) or encounter its own body game over
@@ -151,11 +151,11 @@ class Snake():
                 if e.type == pygame.QUIT:
                     pygame.quit()
                 elif e.type == pygame.KEYDOWN:
-                  # QUIT
+                  # quit
                     if e.key == pygame.K_ESCAPE:
                         pygame.quit()
                         exit()
-                    # PAUSE
+                    # pause
                     if e.key == pygame.K_SPACE:
                         pause = True
                         while pause:
@@ -166,7 +166,7 @@ class Snake():
                                     if ee.key == pygame.K_SPACE:
                                         pause = False
                     if __name__ == '__main__':
-                        # CONTROLLER
+                        # control
                         if prev_key != pygame.K_DOWN and e.key == pygame.K_UP:
                             self.direction = 0
                             prev_key = e.key
@@ -180,7 +180,7 @@ class Snake():
                             self.direction = 3
                             prev_key = e.key
               
-            #   action
+            # genome action
             if __name__ != '__main__':
                 inputs = self.get_inputs()
                 outputs = self.genome.forward(inputs)
@@ -192,26 +192,33 @@ class Snake():
                     self.direction = (self.direction + 3) % 4
                 elif outputs == 2: # right
                     self.direction = (self.direction + 1) % 4
-      
+
             if not self.step(self.direction):
+            # self.step will return false if gameover
                 break
       
-            # compute fitness
+            # compute fitness(validation indicator for genome)
             current_dist = np.linalg.norm(self.snake[0] - self.fruit)
+            # gain point if distence between head & fruit have decreased compared to previous step
             if self.last_dist > current_dist:
                 self.fitness += 1.
             else:
                 self.fitness -= 1.5
             self.last_dist = current_dist
-      
+
+            # set screen background color
             self.s.fill((0, 0, 0))
-            pygame.draw.rect(self.s, (255,255,255), [0,0,SCREEN_SIZE*PIXEL_SIZE,LINE_WIDTH])
-            pygame.draw.rect(self.s, (255,255,255), [0,SCREEN_SIZE*PIXEL_SIZE-LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE,LINE_WIDTH])
-            pygame.draw.rect(self.s, (255,255,255), [0,0,LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE])
-            pygame.draw.rect(self.s, (255,255,255), [SCREEN_SIZE*PIXEL_SIZE-LINE_WIDTH,0,LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE+LINE_WIDTH])
+            # set screen border color
+            pygame.draw.rect(self.s, (0,0,0), [0,0,SCREEN_SIZE*PIXEL_SIZE,LINE_WIDTH])
+            pygame.draw.rect(self.s, (0,0,0), [0,SCREEN_SIZE*PIXEL_SIZE-LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE,LINE_WIDTH])
+            pygame.draw.rect(self.s, (0,0,0), [0,0,LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE])
+            pygame.draw.rect(self.s, (0,0,0), [SCREEN_SIZE*PIXEL_SIZE-LINE_WIDTH,0,LINE_WIDTH,SCREEN_SIZE*PIXEL_SIZE+LINE_WIDTH])
+            # set snake on screen
             for bit in self.snake:
                 self.s.blit(img, (bit[0] * PIXEL_SIZE, bit[1] * PIXEL_SIZE))
+            # set fruit on screen
             self.s.blit(appleimage, (self.fruit[0] * PIXEL_SIZE, self.fruit[1] * PIXEL_SIZE))
+            # set score on screen
             score_ts = font.render(str(self.score), False, (255, 255, 255))
             self.s.blit(score_ts, (5, 5))
             pygame.display.update()
