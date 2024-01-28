@@ -3,15 +3,21 @@ import random
 import numpy as np
 from copy import deepcopy
 
+# game related variables
 FPS = 60
 SCREEN_SIZE = 30
 PIXEL_SIZE = 5
 LINE_WIDTH = 1
 
-BULET_MISS_PENALTY = 1.2
+
+# rewords (+)
 SHOOT_REWORD = 1
+TARGET_HIT_REWORD = 20
+
+# penalties (-)
+BULET_MISS_PENALTY = 1.2
 MOVE_OUT_OF_BORD_PENALTY = 0.8
-TARGET_HIT_REWORD = 10
+
 
 class shooting:
     def __init__(self, screen, genome):
