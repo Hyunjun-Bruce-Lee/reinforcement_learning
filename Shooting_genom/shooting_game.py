@@ -17,6 +17,7 @@ TARGET_HIT_REWORD = 20
 # penalties (-)
 BULET_MISS_PENALTY = 1.2
 MOVE_OUT_OF_BORD_PENALTY = 0.8
+SHOOT_WHILE_RELOAD = 0.2
 
 
 class shooting:
@@ -27,6 +28,7 @@ class shooting:
         self.target = None
         self.bulet = list()
         self.shooter = [round(SCREEN_SIZE/2), 3] #shooters initial location
+        self.reloading = [False, 0]
         self.score = 0
         self.generate_target()
 
@@ -40,6 +42,8 @@ class shooting:
     def generate_bulet(self):
         # generate bulet when shooter shoots(K_SPACE)
         self.bulet.append([deepcopy(self.shooter[0]), 4])
+        self.reloading[-1] = 2
+        self.reloading[0] = True
 
     def move_target(self):
         # move_target according to direction
@@ -78,7 +82,11 @@ class shooting:
         elif key == pygame.K_RIGHT:
             new_position = np.array(self.shooter) + [1,0]
         elif key == pygame.K_SPACE:
-            self.generate_bulet()
+            if not self.reloading[0]:
+                self.generate_bulet()
+            else :
+                self.earned_reword -= SHOOT_WHILE_RELOAD
+
             self.earned_reword += SHOOT_REWORD
         
         if new_position[0] in range(1,SCREEN_SIZE):
@@ -105,6 +113,11 @@ class shooting:
             if flag > simulation_time:
                 break
             clock.tick(FPS)
+            if self.reloading[-1] != 0:
+                self.reloading[-1] -= 1
+            else:
+                self.reloading[0] = False
+
             for e in pygame.event.get():
                 # shut down
                 if e.type == pygame.QUIT:
