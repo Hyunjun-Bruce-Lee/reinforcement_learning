@@ -8,6 +8,7 @@ FPS = 60
 SCREEN_SIZE = 30
 PIXEL_SIZE = 5
 LINE_WIDTH = 1
+RELOAD_TIME = 4
 
 
 # rewords (+)
@@ -42,7 +43,7 @@ class shooting:
     def generate_bulet(self):
         # generate bulet when shooter shoots(K_SPACE)
         self.bulet.append([deepcopy(self.shooter[0]), 4])
-        self.reloading[-1] = 2
+        self.reloading[-1] = RELOAD_TIME
         self.reloading[0] = True
 
     def move_target(self):

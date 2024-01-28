@@ -7,8 +7,9 @@ from datetime import datetime
 
 class Genome():
     def __init__(self):
+        self.generation = 0
         self.fitness = 0
-        self.simulation_time = 10
+        self.simulation_time = 20
         # define weight matrix
         hidden_layer = 10
         self.w1 = np.random.randn(30, hidden_layer)
@@ -35,7 +36,7 @@ class Genome():
         return np.where(x > 0, x, x * 0.01)
 
 
-load_genomes = False
+load_genomes = True
 genome_dir = './genoms/genom.bin'
 
 
@@ -58,23 +59,21 @@ else :
 
 best_genomes = None
 
-n_gen = 0
 while True:
     time_a = datetime.now()
-
-    n_gen += 1
-  
+    
     for i, genome in enumerate(genomes):
         snake = shooting(screen, genome=genome)
         fitness, score = snake.run(genome.simulation_time)
-    
+        genome.generation += 1
         genome.fitness = fitness
-    
-        # print('Generation #%s, Genome #%s, Fitness: %s, Score: %s' % (n_gen, i, fitness, score))
 
     if best_genomes is not None:
         genomes.extend(best_genomes)
+
     genomes.sort(key=lambda x: x.fitness, reverse=True)
+
+    n_gen = genomes[0].generation
 
     time_b = datetime.now()
     
