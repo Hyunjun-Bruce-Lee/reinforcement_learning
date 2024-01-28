@@ -35,6 +35,10 @@ class Genome():
         return np.where(x > 0, x, x * 0.01)
 
 
+load_genomes = False
+genome_dir = './genoms/genom.bin'
+
+
 N_POPULATION = 50 # number of genoms (pool)
 N_BEST = 5 # number of genoms to keep after each generation (if n == 5, ~ Top 5)
 N_CHILDREN = 5 # number of childrens in each generation
@@ -46,10 +50,13 @@ pygame.font.init()
 screen = pygame.display.set_mode((SCREEN_SIZE * PIXEL_SIZE, SCREEN_SIZE * PIXEL_SIZE))
 pygame.display.set_caption('shooting')
 
-genomes = [Genome() for _ in range(N_POPULATION)]
+if load_genomes == True:
+   with open(genome_dir, 'rb') as f:
+      genomes = pickle.load(f)
+else :
+    genomes = [Genome() for _ in range(N_POPULATION)]
+
 best_genomes = None
-
-
 
 n_gen = 0
 while True:
@@ -71,7 +78,7 @@ while True:
 
     time_b = datetime.now()
     
-    with open('./genoms/genom.bin', 'wb') as f:
+    with open(genome_dir, 'wb') as f:
        pickle.dump(genomes, f)
 
     print(f'>>> Generaton #{n_gen}\n\tBest Fitness {genomes[0].fitness}\n\tsimulation time : {time_b - time_a}')
