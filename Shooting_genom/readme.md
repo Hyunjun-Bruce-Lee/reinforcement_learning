@@ -9,4 +9,4 @@ till 600 generation Fitness only went up to 1<br>
 <br>
 nomatter how i fix the score using rule above Fitness is stuck at 1 <br>
 <br>
-it seems new design of rule set needed<br>
+it seems new design of rule set is needed<br>
