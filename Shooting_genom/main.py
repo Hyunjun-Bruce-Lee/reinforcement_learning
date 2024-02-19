@@ -5,6 +5,9 @@ from shooting_game import shooting, SCREEN_SIZE, PIXEL_SIZE
 import pickle
 from datetime import datetime
 
+load_genomes = False
+genome_dir = './genoms/genom.bin'
+
 class Genome():
     def __init__(self):
         self.generation = 0
@@ -35,11 +38,6 @@ class Genome():
     def leaky_relu(self, x):
         return np.where(x > 0, x, x * 0.01)
 
-
-load_genomes = True
-genome_dir = './genoms/genom.bin'
-
-
 N_POPULATION = 50 # number of genoms (pool)
 N_BEST = 5 # number of genoms to keep after each generation (if n == 5, ~ Top 5)
 N_CHILDREN = 5 # number of childrens in each generation
@@ -63,8 +61,8 @@ while True:
     time_a = datetime.now()
     
     for i, genome in enumerate(genomes):
-        snake = shooting(screen, genome=genome)
-        fitness, score = snake.run(genome.simulation_time)
+        game = shooting(screen, genome=genome)
+        fitness, score = game.run(genome.simulation_time)
         genome.generation += 1
         genome.fitness = fitness
 

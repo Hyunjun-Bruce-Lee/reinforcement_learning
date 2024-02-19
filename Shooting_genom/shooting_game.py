@@ -12,12 +12,12 @@ RELOAD_TIME = 4
 
 
 # rewords (+)
-SHOOT_REWORD = 1
+SHOOT_REWORD = 0.2
 TARGET_HIT_REWORD = 20
 
 # penalties (-)
 BULET_MISS_PENALTY = 1.2
-MOVE_OUT_OF_BORD_PENALTY = 0.8
+MOVE_OUT_OF_BORD_PENALTY = 0.3
 SHOOT_WHILE_RELOAD = 0.2
 
 
@@ -31,11 +31,12 @@ class shooting:
         self.shooter = [round(SCREEN_SIZE/2), 3] #shooters initial location
         self.reloading = [False, 0]
         self.score = 0
+        self.flag = 0
         self.generate_target()
 
     def generate_target(self):
         flag = np.random.randint(100)
-        # generate target from left if flag is odd number else from right
+        # generate target from left if flag is odd number, else from right
         # d stans for direction(direction for bulit to move toward)
         x,d = (0,0) if flag%2 == 1 else (SCREEN_SIZE-1,1)
         self.target = np.array([x,25,d])
@@ -72,6 +73,7 @@ class shooting:
         for b in self.bulet:
             if (self.target[0] == b[0]) and (self.target[1] == b[1]):
                 self.score += 1
+                self.flag = 0
                 self.earned_reword += TARGET_HIT_REWORD
                 self.generate_target()
 
@@ -108,10 +110,10 @@ class shooting:
         shooter_img, bulet_img, target_img = pygame.Surface((PIXEL_SIZE, PIXEL_SIZE)), pygame.Surface((PIXEL_SIZE, PIXEL_SIZE)), pygame.Surface((PIXEL_SIZE, PIXEL_SIZE))
         shooter_img.fill((0,0,255)), bulet_img.fill((0,255,0)), target_img.fill((255,200,200))
         clock = pygame.time.Clock()
-        flag = 0
 
         while True:
-            if flag > simulation_time:
+            self.flag += 0.1 # 60 fps, 1 frame 0.1sec
+            if self.flag > 3 : # flag will be set to 0 if score. exit if it doesn't hit target for 3 sec
                 break
             clock.tick(FPS)
             if self.reloading[-1] != 0:
@@ -139,7 +141,7 @@ class shooting:
                     key_event = pygame.K_RIGHT
             
             self.control(key_event)
-            if flag%2 == 1:
+            if (self.flag*10)%2 == 1:
                 self.move_target()
             self.move_bulet()
             self.target_hit_check()
@@ -155,7 +157,6 @@ class shooting:
             score_txt = font.render(str(self.score), False, (255, 255, 255))
             self.screen.blit(score_txt, (5,5))
             pygame.display.update()
-            flag += 1
         return self.earned_reword, self.score
 
 
