@@ -117,8 +117,8 @@ while True:
         for bg in best_genomes:
             new_genome = deepcopy(bg)
       
-            mean = 20
-            stddev = 10
+            mean = 10
+            stddev = 5
 
             if random.uniform(0, 1) < PROB_MUTATION:
               new_genome.w1 += new_genome.w1 * np.random.normal(mean, stddev, size=(6, 10)) / 100 * np.random.randint(-1, 2, (6, 10))
