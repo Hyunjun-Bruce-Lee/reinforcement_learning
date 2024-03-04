@@ -2,6 +2,7 @@ import pygame
 import random
 import numpy as np
 from copy import deepcopy
+from math import sqrt
 
 # game related variables
 FPS = 60
@@ -103,6 +104,12 @@ class shooting:
         current_screen_info = np.zeros([SCREEN_SIZE,SCREEN_SIZE])
         current_screen_info[self.target[0]][self.target[1]] = 1 # mark current target location as 1
         return np.array(current_screen_info)
+
+    def cal_dist(self, a,b):
+        # calculate euclidean distance
+        a_x, a_y = a
+        b_x, b_y = b
+        return sqrt((b_x-a_x)**2 + (b_y-a_y)**2)
 
     def run(self, simulation_time):
         font = pygame.font.Font('/Users/hyunjun_bruce_lee/Library/Fonts/FiraCode-Bold.ttf', 20)

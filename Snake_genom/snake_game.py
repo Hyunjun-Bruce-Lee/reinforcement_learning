@@ -1,7 +1,6 @@
 import pygame
 import random
 import numpy as np
-from math import sqrt
 
 # define variables
 FPS = 60
@@ -123,12 +122,6 @@ class Snake():
             result[5] = 1
     
         return np.array(result)
-    
-    def cal_dist(self, a,b):
-        # calculate euclidean distance
-        a_x, a_y = a
-        b_x, b_y = b
-        return sqrt((b_x-a_x)**2 + (b_y-a_y)**2)
 
     def run(self):
         # define rungame
